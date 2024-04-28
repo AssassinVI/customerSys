@@ -1,50 +1,29 @@
 <template>
   <div>
     <h1>HOME</h1>
-    <p>{{ user.name }}</p>
+    <p>{{ loginStores.user.name }}</p>
+    <button @click="logout">登出</button>
   </div>
 </template>
 <script setup lang="ts">
-  import {onMounted, reactive} from 'vue'
-  import axios from 'axios'
-  import {useLoginJWT} from '@/stores/loginJWT'
-  import { ElMessage } from 'element-plus'
+  import {useRouter} from 'vue-router';
+  import {useLogin} from '@/stores/login'
+  import { ElMessageBox } from 'element-plus'
 
-  const loginStores=useLoginJWT()
+  const loginStores=useLogin()
+  const route=useRouter()
 
-  let user=reactive({
-    Group_name: "",
-    Permissions: "",
-    Tb_index: "",
-    admin_per: "",
-    name: ""
-  })
-
-  onMounted(() => {
-    axios.get('https://cusys.api.srl.tw/ajax/login.php', {
-      headers: {
-        'Authorization': sessionStorage['jwt'],
-        'Refresh-Token': localStorage['refresh_jwt'],
-      }
+  function logout() {
+    ElMessageBox.alert('已登出後台', {
+      confirmButtonText: '確定',
+      callback: () => {
+        sessionStorage.removeItem('jwt')
+        localStorage.removeItem('refresh_jwt');
+        loginStores.clean()
+        route.push('/')
+      },
     })
-    .then((data)=>{
-       if(data.data.success){
-         user.name=data.data.data.name
-         user.Group_name=data.data.data.Group_name
-         user.Permissions=data.data.data.Permissions
-         user.Tb_index=data.data.data.Tb_index
-         user.admin_per=data.data.data.admin_per
-       }
-       console.log(data)
-    })
-    .catch((error)=>{
-      ElMessage({
-          message: error,
-          type:'error',
-          customClass:'alert'
-      })
-    })
-  })
+  }
 </script>
 
 <style lang="scss" scoped>
