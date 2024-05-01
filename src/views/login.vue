@@ -49,7 +49,7 @@
                 ElMessageBox.alert(response.data.msg, '系統訊息', {
                     confirmButtonText: '確定',
                     callback: () => {
-                        router.push('/home')
+                        router.push('/data')
                     },
                 })
                 sessionStorage['jwt']=response.data.jwt

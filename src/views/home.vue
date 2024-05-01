@@ -1,31 +1,50 @@
 <template>
-  <div>
-    <h1>HOME</h1>
-    <p>{{ loginStores.user.name }}</p>
-    <button @click="logout">登出</button>
+  <div class="common-layout">
+    <el-container>
+      <el-aside width="200px">
+        <MenuCom/>
+      </el-aside>
+      <el-container>
+        <el-header>
+           <HeaderCom/>
+        </el-header>
+        <el-main>
+          <RouterView/>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 <script setup lang="ts">
-  import {useRouter} from 'vue-router';
-  import {useLogin} from '@/stores/login'
-  import { ElMessageBox } from 'element-plus'
+  import {RouterView} from 'vue-router';
+  import HeaderCom from '@/components/header.vue';
+  import MenuCom from '@/components/menu.vue';
 
-  const loginStores=useLogin()
-  const route=useRouter()
-
-  function logout() {
-    ElMessageBox.alert('已登出後台', {
-      confirmButtonText: '確定',
-      callback: () => {
-        sessionStorage.removeItem('jwt')
-        localStorage.removeItem('refresh_jwt');
-        loginStores.clean()
-        route.push('/')
-      },
-    })
-  }
+  
 </script>
 
 <style lang="scss" scoped>
-  
+  .common-layout{
+    height: 100vh;
+    .el-container{
+      height: 100%;
+      .el-aside{
+        background-color: #f1f1f1;
+        box-shadow: 0px 0px 15px #00000030;
+        z-index: 10;
+        
+      }
+      .el-header{
+        background-color: #eeeeee;
+
+        .flex_box{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 2%;
+          height: 100%;
+        }
+      }
+    }
+  }
 </style>

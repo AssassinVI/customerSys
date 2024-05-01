@@ -26,8 +26,6 @@ export const useLogin = defineStore('login', () => {
   }
   
   onBeforeMount(() => {
-    
-    console.log(user.value)
 
     axios.get('https://cusys.api.srl.tw/ajax/login.php', {
       headers: {
