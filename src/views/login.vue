@@ -24,9 +24,9 @@
 </template>
 <script setup lang="ts">
     import { reactive, ref } from 'vue'
-    import axios from 'axios'
     import { useRouter } from 'vue-router'
     import { ElMessage, ElMessageBox } from 'element-plus'
+    import useAxios from '@/hook/useAxios'
 
 
     const formInput = reactive({
@@ -38,13 +38,17 @@
 
     //-- 登入會員 --
     function submit_login() {
-        axios.post('https://cusys.api.srl.tw/ajax/login.php', {
-            admin_id: formInput.admin_id,
-            admin_pwd: formInput.admin_pwd
+
+        useAxios({
+            method: 'post',
+            url: 'login.php',
+            data: {
+                admin_id: formInput.admin_id,
+                admin_pwd: formInput.admin_pwd
+            }
         })
         .then(function (response) {
             
-            // console.log(response);
             if(response.data.success){
                 ElMessageBox.alert(response.data.msg, '系統訊息', {
                     confirmButtonText: '確定',
@@ -52,7 +56,9 @@
                         router.push('/data')
                     },
                 })
-                sessionStorage['jwt']=response.data.jwt
+                console.log(response.data.jwt);
+                console.log(response.data.refresh_jwt);
+                sessionStorage['jwt']=`Bearer ${response.data.jwt}`
                 localStorage['refresh_jwt']=response.data.refresh_jwt
             }
             else{
@@ -71,6 +77,41 @@
                 customClass:'alert'
             })
         });
+
+        // axios.post('https://cusys.api.srl.tw/ajax/login.php', {
+        //     admin_id: formInput.admin_id,
+        //     admin_pwd: formInput.admin_pwd
+        // })
+        // .then(function (response) {
+            
+        //     if(response.data.success){
+        //         ElMessageBox.alert(response.data.msg, '系統訊息', {
+        //             confirmButtonText: '確定',
+        //             callback: () => {
+        //                 router.push('/data')
+        //             },
+        //         })
+        //         console.log(response.data.jwt);
+        //         console.log(response.data.refresh_jwt);
+        //         sessionStorage['jwt']=`Bearer ${response.data.jwt}`
+        //         localStorage['refresh_jwt']=response.data.refresh_jwt
+        //     }
+        //     else{
+        //         ElMessage({
+        //             message: response.data.msg,
+        //             type:'error',
+        //             customClass:'alert',
+        //         })
+        //     }
+            
+        // })
+        // .catch(function (error) {
+        //     ElMessage({
+        //         message: error,
+        //         type:'error',
+        //         customClass:'alert'
+        //     })
+        // });
     }
 
     

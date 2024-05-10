@@ -16,8 +16,8 @@
 </template>
 <script setup lang="ts">
   import {ref} from 'vue';
-  import axios from 'axios';
   import { ElMessage } from 'element-plus'
+  import useAxios from '@/hook/useAxios'
 
   let tableData = ref([
     {
@@ -29,11 +29,10 @@
   ])
   let dataTotal=ref(0)
 
-  axios.get('https://cusys.api.srl.tw/ajax/data.php', {
-    headers: {
-      'Authorization': sessionStorage['jwt'],
-      'Refresh-Token': localStorage['refresh_jwt'],
-    }
+  //-- 撈資料 --
+  useAxios({
+    method: 'get',
+    url: 'data.php',
   })
   .then((data)=>{
       let _data=data.data
@@ -48,6 +47,26 @@
         customClass:'alert'
     })
   })
+
+  // axios.get('https://cusys.api.srl.tw/ajax/data.php', {
+  //   headers: {
+  //     'Authorization': sessionStorage['jwt'],
+  //     'Refresh-Token': localStorage['refresh_jwt'],
+  //   }
+  // })
+  // .then((data)=>{
+  //     let _data=data.data
+  //     tableData.value=_data.data
+  //     dataTotal.value=_data.data.length
+  //     console.log(_data.data)
+  // })
+  // .catch((error)=>{
+  //   ElMessage({
+  //       message: error,
+  //       type:'error',
+  //       customClass:'alert'
+  //   })
+  // })
 
     
 </script>
