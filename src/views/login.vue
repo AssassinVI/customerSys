@@ -56,8 +56,6 @@
                         router.push('/data')
                     },
                 })
-                console.log(response.data.jwt);
-                console.log(response.data.refresh_jwt);
                 sessionStorage['jwt']=`Bearer ${response.data.jwt}`
                 localStorage['refresh_jwt']=response.data.refresh_jwt
             }
@@ -70,48 +68,6 @@
             }
             
         })
-        .catch(function (error) {
-            ElMessage({
-                message: error,
-                type:'error',
-                customClass:'alert'
-            })
-        });
-
-        // axios.post('https://cusys.api.srl.tw/ajax/login.php', {
-        //     admin_id: formInput.admin_id,
-        //     admin_pwd: formInput.admin_pwd
-        // })
-        // .then(function (response) {
-            
-        //     if(response.data.success){
-        //         ElMessageBox.alert(response.data.msg, '系統訊息', {
-        //             confirmButtonText: '確定',
-        //             callback: () => {
-        //                 router.push('/data')
-        //             },
-        //         })
-        //         console.log(response.data.jwt);
-        //         console.log(response.data.refresh_jwt);
-        //         sessionStorage['jwt']=`Bearer ${response.data.jwt}`
-        //         localStorage['refresh_jwt']=response.data.refresh_jwt
-        //     }
-        //     else{
-        //         ElMessage({
-        //             message: response.data.msg,
-        //             type:'error',
-        //             customClass:'alert',
-        //         })
-        //     }
-            
-        // })
-        // .catch(function (error) {
-        //     ElMessage({
-        //         message: error,
-        //         type:'error',
-        //         customClass:'alert'
-        //     })
-        // });
     }
 
     

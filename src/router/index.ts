@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import Login from '../views/login.vue'
 import Home from '../views/home.vue'
-import Data from '@/views/main/data.vue';
+import tableData from '@/views/main/tableData.vue';
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -19,7 +19,7 @@ const router = createRouter({
         {
           path: '/data',
           name: 'dataPage',
-          component: Data
+          component: tableData
         }
       ]
     }

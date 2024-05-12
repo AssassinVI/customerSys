@@ -1,7 +1,7 @@
 import { ref, onBeforeMount } from 'vue'
 import { defineStore } from 'pinia'
 import {useRouter} from 'vue-router';
-import axios from 'axios'
+import useAxios from '@/hook/useAxios'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 export const useLogin = defineStore('login', () => {
@@ -13,6 +13,7 @@ export const useLogin = defineStore('login', () => {
     admin_per: "",
     name: ""
   })
+
   let route=useRouter()
 
   function clean() {
@@ -27,11 +28,9 @@ export const useLogin = defineStore('login', () => {
   
   onBeforeMount(() => {
 
-    axios.get('https://cusys.api.srl.tw/ajax/login.php', {
-      headers: {
-        'Authorization': sessionStorage['jwt'],
-        'Refresh-Token': localStorage['refresh_jwt'],
-      }
+    useAxios({
+      method: 'get',
+      url: 'login.php',
     })
     .then((data)=>{
        let _data=data.data
@@ -48,13 +47,6 @@ export const useLogin = defineStore('login', () => {
        }
 
       //  console.log(user.value)
-    })
-    .catch((error)=>{
-      ElMessage({
-          message: error,
-          type:'error',
-          customClass:'alert'
-      })
     })
   })
 
