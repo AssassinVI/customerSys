@@ -1,7 +1,7 @@
 <template>
     <Search />
     
-    <el-table :data="tableData" border height="500" style="width: 100%">
+    <el-table :data="tableData" border height="600" style="width: 100%">
         <el-table-column prop="casename" label="案名" width="180" />
         <el-table-column prop="customername" label="姓名" width="180" />
         <el-table-column prop="adds" label="居住區域" />
@@ -41,13 +41,24 @@
   let pageSize=ref(25)
   //-- 第幾頁 --
   let currentPage=ref(1)
+  //-- 查詢物件 --
+  let search = ref({
+    caseid: '',
+    county: ''
+  })
 
 
   //-- 撈資料 --
-  function getData(pageSize:number, currentPage:number) {
+  function getData() {
     useAxios({
-      method: 'get',
-      url: `data.php?type=data&pageSize=${pageSize}&currentPage=${currentPage}`,
+      method: 'post',
+      url: `data.php`,
+      data: {
+        type: 'data',
+        pageSize: pageSize.value,
+        currentPage: currentPage.value,
+        search: search.value
+      }
     })
     .then((data)=>{
       let _data=data.data
@@ -65,30 +76,40 @@
       }
     })
   }
-  getData(pageSize.value, currentPage.value)
+  getData()
   
 
   //-- 總數 --
-  useAxios({
-    method: 'get',
-    url: `data.php?type=dataTotal`,
-  })
-  .then((data)=>{
-    let _data=data.data
-    if(_data.success){
-      dataTotal.value=parseInt( _data.data.total)
-    }
+  function getDataTotal() {
+    useAxios({
+      method: 'post',
+      url: `data.php`,
+      data: {
+        type: 'dataTotal',
+        search: search.value
+      }
+    })
+    .then((data)=>{
+      let _data=data.data
+      if(_data.success){
+        dataTotal.value=parseInt( _data.data.total)
+      }
+    })
+  }
+  getDataTotal()
+  
+
+  watch([currentPage, pageSize], ()=>{
+    getData()
   })
 
-  watch(currentPage, (newValue)=>{
-    getData(pageSize.value, newValue)
-  })
-
-  watch(pageSize, (newValue)=>{
-    getData(newValue, currentPage.value)
-  })
+  watch(search, ()=>{
+    getData()
+    getDataTotal()
+  },{ deep: true })
 
 
+  defineExpose({search, pageSize})
 </script>
 <style lang="scss" scoped>
     .pagination{

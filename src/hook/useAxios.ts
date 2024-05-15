@@ -26,7 +26,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response) => {
         // 檢查response中的data.success屬性是否為false
-        console.log(response.data)
+        // console.log(response.data)
         //-- 延長token --
         if(response.data.jwt && response.data.jwt.jwt!==''){
             window.sessionStorage.setItem("jwt", response.data.jwt);
