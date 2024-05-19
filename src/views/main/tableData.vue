@@ -1,7 +1,7 @@
 <template>
     <Search />
     
-    <el-table :data="tableData" border height="600" style="width: 100%">
+    <el-table :data="tableData" border height="500" style="width: 100%">
         <el-table-column prop="casename" label="案名" width="180" />
         <el-table-column prop="customername" label="姓名" width="180" />
         <el-table-column prop="adds" label="居住區域" />
@@ -44,7 +44,8 @@
   //-- 查詢物件 --
   let search = ref({
     caseid: '',
-    county: ''
+    city: '',
+    district: ''
   })
 
 
