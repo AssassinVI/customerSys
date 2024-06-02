@@ -10,7 +10,7 @@
                 class="inline-input w-50"
                 placeholder="請輸入建案名稱"
                 @select="handleCase"
-                @change="changeCase"
+                @change="deleteCase"
             />
         </el-form-item>
         
@@ -57,7 +57,7 @@
   
 </template>
 <script setup lang="ts">
-    import { reactive, ref, onMounted, watch } from 'vue'
+
     import useAxios from '@/hook/useAxios'
     import { Search } from '@element-plus/icons-vue'
 
@@ -67,8 +67,14 @@
         value: string
     }
 
+    interface formData{
+        case:any[],
+        city:any[],
+        district:any[],
+    }
+
     // do not use same name with ref
-    let form = reactive<any>({
+    let form = reactive<formData>({
         case: [],
         city: [],
         district: []
@@ -103,7 +109,7 @@
         case_obj.value=item
     }
     //-- 清除建案 --
-    function changeCase () {
+    function deleteCase () {
         case_obj.value={
             tb_index: '',
             value: ''

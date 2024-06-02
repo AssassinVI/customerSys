@@ -19,7 +19,6 @@
     
 </template>
 <script setup lang="ts">
-  import {ref, watch} from 'vue';
   import Search from '@/views/main/search.vue';
   import { ElMessage } from 'element-plus'
   import useAxios from '@/hook/useAxios'

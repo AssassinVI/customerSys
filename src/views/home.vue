@@ -16,7 +16,7 @@
   </div>
 </template>
 <script setup lang="ts">
-  import {RouterView} from 'vue-router';
+
   import HeaderCom from '@/components/header.vue';
   import MenuCom from '@/components/menu.vue';
 
